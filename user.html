@@ -1,1 +1,86 @@
+<!-- user.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zency Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 25px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .card img, .card video {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      color: #00fff7;
+    }
+
+    .price {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .ask-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      text-align: center;
+      padding: 12px;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .ask-btn:hover {
+      background: #128C7E;
+    }
+
+    .top-title {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 2.2rem;
+      color: #00fff7;
+      text-shadow: 0 0 10px #00fff7;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="top-title">🛍️ Zency Collection</h1>
+  <div class="product-grid" id="productList"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/user.js"></script>
+</body>
+</html>
 
