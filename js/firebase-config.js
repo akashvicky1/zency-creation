@@ -1,4 +1,3 @@
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDZLrF220ViXqBaYV7nB8aDZEFuO51niZg",
   authDomain: "zency-creation-project.firebaseapp.com",
@@ -9,5 +8,4 @@ const firebaseConfig = {
   measurementId: "G-BYZ982SG4P"
 };
 
-// ✅ Initialize Firebase App
 firebase.initializeApp(firebaseConfig);
