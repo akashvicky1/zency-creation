@@ -1,81 +1,66 @@
-<!-- user.html -->
+<!-- user_with_logo.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zency Store</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css">
   <style>
-    .product-grid {
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+    #productList {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 25px;
-      padding: 40px;
     }
-
     .card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 25px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      background: #1a1a1a;
+      border-radius: 18px;
       padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      text-align: center;
       color: white;
-      transition: 0.3s;
     }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    }
-
     .card img, .card video {
       width: 100%;
-      border-radius: 15px;
-      margin-bottom: 15px;
-    }
-
-    .card h3 {
-      margin: 0 0 10px;
-      color: #00fff7;
-    }
-
-    .price {
-      font-size: 1.1rem;
+      border-radius: 12px;
       margin-bottom: 10px;
+      max-height: 220px;
+      object-fit: cover;
     }
-
+    .price {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
     .ask-btn {
-      display: block;
-      width: 100%;
-      background: linear-gradient(135deg, #25D366, #128C7E);
-      color: white;
-      text-align: center;
-      padding: 12px;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #00ffd5, #00bfa6);
+      color: black;
       font-weight: bold;
-      font-size: 1rem;
-      border: none;
-      border-radius: 999px;
       text-decoration: none;
-      transition: 0.3s;
+      border-radius: 999px;
+      box-shadow: 0 5px 15px rgba(0,255,213,0.4);
+      transition: all 0.3s ease;
     }
-
     .ask-btn:hover {
-      background: #128C7E;
-    }
-
-    .top-title {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 2.2rem;
-      color: #00fff7;
-      text-shadow: 0 0 10px #00fff7;
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <h1 class="top-title">🛍️ Zency Collection</h1>
-  <div class="product-grid" id="productList"></div>
+  <div class="logo-box">
+    <img src="images/zp-logo.png" alt="Zency Logo" class="logo-img">
+  </div>
+  <div class="container">
+    <h2 style="color:#00ffd5;text-align:center;margin-bottom:20px;">🛍️ Explore Our Products</h2>
+    <div id="productList">Loading products...</div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -83,4 +68,3 @@
   <script src="js/user.js"></script>
 </body>
 </html>
-
