@@ -1,11 +1,8 @@
-// js/admin.js
-
 const form = document.getElementById("productForm");
 const db = firebase.firestore();
 
-// Your Cloudinary config
-const CLOUD_NAME = "dhe9pzyyn";
-const UPLOAD_PRESET = "zency_preset";
+const cloudName = "dhe9pzyyn";
+const uploadPreset = "zency_preset"; // 👈 Your unsigned preset
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -29,38 +26,14 @@ form.addEventListener("submit", async (e) => {
   try {
     const imageUrls = [];
 
-    // Upload Images to Cloudinary
     for (let i = 0; i < imageFiles.length; i++) {
-      const formData = new FormData();
-      formData.append("file", imageFiles[i]);
-      formData.append("upload_preset", UPLOAD_PRESET);
-      formData.append("folder", `zency/products/${id}`);
-
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await res.json();
-      imageUrls.push(data.secure_url);
+      const url = await uploadToCloudinary(imageFiles[i], "image");
+      imageUrls.push(url);
     }
 
-    // Upload Video (if any)
     let videoUrl = "";
     if (videoFile) {
-      const videoData = new FormData();
-      videoData.append("file", videoFile);
-      videoData.append("upload_preset", UPLOAD_PRESET);
-      videoData.append("resource_type", "video");
-      videoData.append("folder", `zency/products/${id}`);
-
-      const videoRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`, {
-        method: "POST",
-        body: videoData
-      });
-
-      const videoJson = await videoRes.json();
-      videoUrl = videoJson.secure_url;
+      videoUrl = await uploadToCloudinary(videoFile, "video");
     }
 
     const productData = {
@@ -81,7 +54,22 @@ form.addEventListener("submit", async (e) => {
     form.reset();
 
   } catch (error) {
-    console.error("❌ Upload Error:", error);
-    alert("Upload failed. Check console for details.");
+    console.error("❌ Error uploading product:", error);
+    alert("Something went wrong. Check console.");
   }
 });
+
+async function uploadToCloudinary(file, type) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+  formData.append("folder", `zency/products`);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/${type}/upload`, {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.secure_url;
+}
