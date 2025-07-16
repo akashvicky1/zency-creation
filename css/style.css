@@ -1,9 +1,9 @@
-/* css/style.css */
+/* css/style.css (Final Polished) */
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
   color: white;
 }
@@ -35,7 +35,7 @@ h1.glow {
   background: linear-gradient(135deg, #ff416c, #ff4b2b);
   border: none;
   border-radius: 50px;
-  box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4);
+  box-shadow: 0 0 15px #ff4b2b;
   transition: all 0.3s ease;
 }
 
@@ -48,3 +48,26 @@ h1.glow {
   border-radius: 999px;
 }
 
+.logo-box {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.logo-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #ff5722;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px #ff5722;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #ff5722;
+  }
+}
