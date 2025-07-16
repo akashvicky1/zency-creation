@@ -1,8 +1,27 @@
-// admin.js
-
 const form = document.getElementById("productForm");
-const storage = firebase.storage();
 const db = firebase.firestore();
+
+// Cloudinary setup
+const cloudName = "dhe9pzyyn";
+const uploadPreset = "zency_preset"; // We'll use unsigned upload preset (you need to create it in your Cloudinary dashboard)
+
+// Image/video upload function
+async function uploadToCloudinary(file, folder) {
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/${file.type.startsWith("video") ? "video" : "image"}/upload`;
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+  formData.append("folder", folder);
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+  return data.secure_url;
+}
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -26,34 +45,29 @@ form.addEventListener("submit", async (e) => {
   try {
     const imageUrls = [];
 
-    // Uploading images
+    // Uploading images to Cloudinary
     for (let i = 0; i < imageFiles.length; i++) {
-      const imageRef = storage.ref().child(`products/${id}/image${i + 1}`);
-      await imageRef.put(imageFiles[i]);
-      const url = await imageRef.getDownloadURL();
+      const url = await uploadToCloudinary(imageFiles[i], `zency/products/${id}`);
       imageUrls.push(url);
     }
 
     // Uploading video (if any)
     let videoUrl = "";
     if (videoFile) {
-      const videoRef = storage.ref().child(`products/${id}/video`);
-      await videoRef.put(videoFile);
-      videoUrl = await videoRef.getDownloadURL();
+      videoUrl = await uploadToCloudinary(videoFile, `zency/products/${id}`);
     }
 
-    // Final product data
     const productData = {
-      name: name,
-      id: id,
-      price: price,
-      discount: discount,
-      size: size,
-      category: category,
-      stock: stock,
+      name,
+      id,
+      price,
+      discount,
+      size,
+      category,
+      stock,
       images: imageUrls,
       video: videoUrl || null,
-      created: firebase.firestore.FieldValue.serverTimestamp() // ✅ fixed
+      created: firebase.firestore.FieldValue.serverTimestamp()
     };
 
     await db.collection("products").add(productData);
@@ -62,6 +76,6 @@ form.addEventListener("submit", async (e) => {
 
   } catch (error) {
     console.error("❌ Error uploading product:", error);
-    alert("Error uploading product. Check console for details.");
+    alert("Upload failed. Check console for more info.");
   }
 });
