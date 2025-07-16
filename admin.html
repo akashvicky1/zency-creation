@@ -1,4 +1,3 @@
-<!-- admin.html (Updated Final Version) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,6 +66,19 @@
       margin-top: 12px;
       color: #aaa;
     }
+    .logout-btn {
+      background: transparent;
+      color: #00ffd5;
+      border: 1px solid #00ffd5;
+      margin-top: 20px;
+    }
+    #loginSection {
+      text-align: center;
+      padding: 30px;
+    }
+    #loginSection input {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -75,35 +87,45 @@
       <img src="images/zp-logo.png" alt="Zency Logo" class="logo-img" />
     </a>
   </div>
-  <div class="container">
+
+  <!-- 🔐 Login Section -->
+  <div class="container" id="loginSection" style="display:none;">
+    <h2>Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- ✅ Product Form Section -->
+  <div class="container" id="productSection" style="display:none;">
     <h2>🛠️ Add New Product</h2>
     <form id="productForm">
       <label for="productImages">Upload Images (1–5)</label>
-      <input type="file" id="productImages" name="productImages" accept="image/*" multiple required />
+      <input type="file" id="productImages" accept="image/*" multiple required />
 
       <label for="productVideo">Upload Video (optional)</label>
-      <input type="file" id="productVideo" name="productVideo" accept="video/*" />
+      <input type="file" id="productVideo" accept="video/*" />
 
       <label for="productName">Product Name</label>
-      <input type="text" id="productName" name="productName" required />
+      <input type="text" id="productName" required />
 
       <label for="productId">Product ID</label>
-      <input type="text" id="productId" name="productId" required />
+      <input type="text" id="productId" required />
 
       <label for="productPrice">Price (₹)</label>
-      <input type="number" id="productPrice" name="productPrice" required />
+      <input type="number" id="productPrice" required />
 
       <label for="productDiscount">Discount Price (₹)</label>
-      <input type="number" id="productDiscount" name="productDiscount" required />
+      <input type="number" id="productDiscount" required />
 
       <label for="productSize">Sizes (e.g., M, L, XL)</label>
-      <input type="text" id="productSize" name="productSize" />
+      <input type="text" id="productSize" />
 
       <label for="productCategory">Category</label>
-      <input type="text" id="productCategory" name="productCategory" required />
+      <input type="text" id="productCategory" required />
 
       <label for="inStock">Availability</label>
-      <select id="inStock" name="inStock">
+      <select id="inStock">
         <option value="yes" selected>In Stock</option>
         <option value="no">Out of Stock</option>
       </select>
@@ -111,12 +133,38 @@
       <button type="submit">🚀 Submit Product</button>
       <div class="note">Images/Videos will be uploaded to Firebase</div>
     </form>
+    <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 
+  <!-- Firebase & Auth Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/admin.js"></script>
+  <script>
+    // Auth Check
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("productSection").style.display = "block";
+      } else {
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("productSection").style.display = "none";
+      }
+    });
+
+    function login() {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .catch(err => alert("Login Failed: " + err.message));
+    }
+
+    function logout() {
+      firebase.auth().signOut();
+    }
+  </script>
 </body>
 </html>
