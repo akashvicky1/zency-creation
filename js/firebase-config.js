@@ -1,3 +1,4 @@
+// js/firebase-config.js
 const firebaseConfig = {
   apiKey: "AIzaSyDZLrF220ViXqBaYV7nB8aDZEFuO51niZg",
   authDomain: "zency-creation-project.firebaseapp.com",
@@ -7,3 +8,6 @@ const firebaseConfig = {
   appId: "1:281015807301:web:7330f1622afa970298622c",
   measurementId: "G-BYZ982SG4P"
 };
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
