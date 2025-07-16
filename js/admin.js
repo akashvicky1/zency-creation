@@ -7,19 +7,24 @@ const uploadPreset = "zency_preset"; // 👈 Your unsigned preset
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = form.productName.value;
-  const id = form.productId.value;
-  const price = parseFloat(form.productPrice.value);
+  const name = form.productName.value.trim();
+  const id = form.productId.value.trim();
+  const price = parseFloat(form.productPrice.value) || 0;
   const discount = parseFloat(form.productDiscount.value) || 0;
-  const size = form.productSize.value;
-  const category = form.productCategory.value;
+  const size = form.productSize.value.trim();
+  const category = form.productCategory.value.trim();
   const stock = form.inStock.value;
 
   const imageFiles = form.productImages.files;
   const videoFile = form.productVideo.files[0];
 
-  if (imageFiles.length === 0 || imageFiles.length > 5) {
-    alert("Please upload 1–5 images.");
+  if (!name || !id || price <= 0 || discount < 0 || !category || imageFiles.length === 0) {
+    alert("Please fill all required fields correctly.");
+    return;
+  }
+
+  if (imageFiles.length > 5) {
+    alert("Please upload a maximum of 5 images.");
     return;
   }
 
@@ -55,7 +60,7 @@ form.addEventListener("submit", async (e) => {
 
   } catch (error) {
     console.error("❌ Error uploading product:", error);
-    alert("Something went wrong. Check console.");
+    alert("Something went wrong while uploading. Check console.");
   }
 });
 
@@ -69,6 +74,8 @@ async function uploadToCloudinary(file, type) {
     method: "POST",
     body: formData
   });
+
+  if (!res.ok) throw new Error("Upload failed");
 
   const data = await res.json();
   return data.secure_url;
